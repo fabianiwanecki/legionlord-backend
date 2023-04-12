@@ -1,0 +1,307 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Fabian Iwanecki
+      changes:
+        - sql:
+            comment: enable extension uuid
+            sql: CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        - createTable:
+            tableName: games
+            columns:
+              - column:
+                  name: id
+                  type: varchar
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_games
+              - column:
+                  name: patch_version
+                  type: varchar
+              - column:
+                  name: date
+                  type: timestamp with time zone
+              - column:
+                  name: queue_type
+                  type: varchar
+              - column:
+                  name: ending_wave
+                  type: number
+              - column:
+                  name: game_length
+                  type: number
+              - column:
+                  name: game_elo
+                  type: number
+              - column:
+                  name: player_count
+                  type: number
+              - column:
+                  name: spell_choices
+                  type: varchar[]
+              - column:
+                  name: left_king_percent_hp
+                  type: float[]
+              - column:
+                  name: right_king_percent_hp
+                  type: float[]
+              - column:
+                  name: king_spell
+                  type: varchar
+        - createTable:
+            tableName: games_player_data
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_player_data
+              - column:
+                  name: game_id
+                  type: varchar
+                  constraints:
+                    foreignKeyName: fk_player_data_games
+                    referencedTableName: games
+                    referencedColumnNames: id
+              - column:
+                  name: player_id
+                  type: varchar
+              - column:
+                  name: player_name
+                  type: varchar
+              - column:
+                  name: player_slot
+                  type: number
+              - column:
+                  name: legion
+                  type: varchar
+              - column:
+                  name: workers
+                  type: number
+              - column:
+                  name: value
+                  type: number
+              - column:
+                  name: is_cross
+                  type: boolean
+              - column:
+                  name: game_result
+                  type: varchar
+              - column:
+                  name: overall_elo
+                  type: number
+              - column:
+                  name: fighters
+                  type: varchar[]
+              - column:
+                  name: mercenaries
+                  type: varchar[]
+              - column:
+                  name: stayed_until_end
+                  type: boolean
+              - column:
+                  name: chosen_spell
+                  type: varchar
+              - column:
+                  name: chosen_spell_location_x
+                  type: varchar
+              - column:
+                  name: chosen_spell_location_y
+                  type: varchar
+              - column:
+                  name: party_size
+                  type: number
+              - column:
+                  name: first_wave_fighters
+                  type: varchar[]
+              - column:
+                  name: rolls
+                  type: varchar[]
+              - column:
+                  name: legion_specific_elo
+                  type: number
+              - column:
+                  name: party_members
+                  type: varchar[]
+              - column:
+                  name: party_members_ids
+                  type: varchar[]
+              - column:
+                  name: mvp_score
+                  type: number
+              - column:
+                  name: net_worth_per_wave
+                  type: integer[]
+              - column:
+                  name: workers_per_wave
+                  type: integer[]
+              - column:
+                  name: income_per_wave
+                  type: integer[]
+              - column:
+                  name: mercenaries_sent_per_wave
+                  type: varchar[][]
+              - column:
+                  name: mercenaries_received_per_wave
+                  type: varchar[][]
+              - column:
+                  name: leaks_per_wave
+                  type: varchar[][]
+              - column:
+                  name: build_per_wave
+                  type: varchar[][]
+              - column:
+                  name: leak_value
+                  type: number
+              - column:
+                  name: leaks_caught_value
+                  type: number
+              - column:
+                  name: left_at_seconds
+                  type: number
+              - column:
+                  name: king_upgrades_per_wave
+                  type: varchar[][]
+              - column:
+                  name: opponent_king_upgrades_per_wave
+                  type: varchar[][]
+        - createTable:
+            tableName: player_data_mercenaries_sent
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_player_data_mercenaries_sent
+              - column:
+                  name: player_data_uuid
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_player_data_mercenaries_sent
+                    referencedTableName: games_player_data
+                    referencedColumnNames: uuid
+              - column:
+                  name: mercenaries
+                  type: varchar[]
+              - column:
+                  name: wave
+                  type: number
+        - createTable:
+            tableName: player_data_mercenaries_received
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_player_data_mercenaries_received
+              - column:
+                  name: player_data_uuid
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_player_data_mercenaries_received
+                    referencedTableName: games_player_data
+                    referencedColumnNames: uuid
+              - column:
+                  name: mercenaries
+                  type: varchar[]
+              - column:
+                  name: wave
+                  type: number
+        - createTable:
+            tableName: player_data_leaks
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_player_data_leaks
+              - column:
+                  name: player_data_uuid
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_player_data_leaks
+                    referencedTableName: games_player_data
+                    referencedColumnNames: uuid
+              - column:
+                  name: leaks
+                  type: varchar[]
+              - column:
+                  name: wave
+                  type: number
+        - createTable:
+            tableName: player_data_fighters
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_player_data_build
+              - column:
+                  name: player_data_uuid
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_player_data_build
+                    referencedTableName: games_player_data
+                    referencedColumnNames: uuid
+              - column:
+                  name: fighters_with_location
+                  type: varchar[]
+              - column:
+                  name: wave
+                  type: number
+        - createTable:
+            tableName: player_data_king_upgrades
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_player_data_king_upgrades
+              - column:
+                  name: player_data_uuid
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_player_data_king_upgrades
+                    referencedTableName: games_player_data
+                    referencedColumnNames: uuid
+              - column:
+                  name: king_upgrades
+                  type: varchar[]
+              - column:
+                  name: wave
+                  type: number
+        - createTable:
+            tableName: player_data_king_upgrades_opponent
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid_generate_v4()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_player_data_king_upgrades_opponent
+              - column:
+                  name: player_data_uuid
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_player_data_king_upgrades_opponent
+                    referencedTableName: games_player_data
+                    referencedColumnNames: uuid
+              - column:
+                  name: king_upgrades
+                  type: varchar[]
+              - column:
+                  name: wave
+                  type: number
