@@ -142,16 +142,16 @@ databaseChangeLog:
                   type: integer[]
               - column:
                   name: mercenaries_sent_per_wave
-                  type: varchar[][]
+                  type: jsonb
               - column:
                   name: mercenaries_received_per_wave
-                  type: varchar[][]
+                  type: jsonb
               - column:
                   name: leaks_per_wave
-                  type: varchar[][]
+                  type: jsonb
               - column:
                   name: build_per_wave
-                  type: varchar[][]
+                  type: jsonb
               - column:
                   name: leak_value
                   type: number
@@ -163,145 +163,310 @@ databaseChangeLog:
                   type: number
               - column:
                   name: king_upgrades_per_wave
-                  type: varchar[][]
+                  type: jsonb
               - column:
                   name: opponent_king_upgrades_per_wave
-                  type: varchar[][]
+                  type: jsonb
+  - changeSet:
+      id: 2
+      author: Fabian Iwanecki
+      changes:
         - createTable:
-            tableName: player_data_mercenaries_sent
+            tableName: units
+            columns:
+              - column:
+                  name: id
+                  type: varchar
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_units
+              - column:
+                  name: unit_id
+                  type: varchar
+              - column:
+                  name: name
+                  type: varchar
+              - column:
+                  name: cost
+                  type: number
+              - column:
+                  name: enabled
+                  type: boolean
+              - column:
+                  name: icon_path
+                  type: varchar
+  - changeSet:
+      id: 3
+      author: Fabian Iwanecki
+      changes:
+        - createTable:
+            tableName: statistics
             columns:
               - column:
                   name: uuid
                   type: uuid
-                  defaultValueComputed: uuid_generate_v4()
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_player_data_mercenaries_sent
+                    primaryKeyName: pk_statistics
               - column:
-                  name: player_data_uuid
-                  type: uuid
-                  constraints:
-                    foreignKeyName: fk_player_data_mercenaries_sent
-                    referencedTableName: games_player_data
-                    referencedColumnNames: uuid
+                  name: patch
+                  type: varchar
               - column:
-                  name: mercenaries
-                  type: varchar[]
+                  name: create_ts
+                  type: timestamp
               - column:
-                  name: wave
-                  type: number
+                  name: modified_ts
+                  type: timestamp
         - createTable:
-            tableName: player_data_mercenaries_received
+            tableName: statistics_ending_waves
             columns:
               - column:
                   name: uuid
                   type: uuid
-                  defaultValueComputed: uuid_generate_v4()
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_player_data_mercenaries_received
+                    primaryKeyName: pk_statistics_ending_waves
               - column:
-                  name: player_data_uuid
+                  name: ending_wave
+                  type: varchar
+              - column:
+                  name: games_ended
+                  type: number
+              - column:
+                  name: games_total
+                  type: number
+              - column:
+                  name: patch
+                  type: varchar
+              - column:
+                  name: game_type
+                  type: varchar
+              - column:
+                  name: rank
+                  type: varchar
+              - column:
+                  name: statistics_uuid
                   type: uuid
                   constraints:
-                    foreignKeyName: fk_player_data_mercenaries_received
-                    referencedTableName: games_player_data
-                    referencedColumnNames: uuid
+                    references: statistics(uuid)
+                    foreignKeyName: fk_statistics_ending_waves
               - column:
-                  name: mercenaries
-                  type: varchar[]
+                  name: create_ts
+                  type: timestamp
               - column:
-                  name: wave
-                  type: number
+                  name: modified_ts
+                  type: timestamp
         - createTable:
-            tableName: player_data_leaks
+            tableName: statistics_legions
             columns:
               - column:
                   name: uuid
                   type: uuid
-                  defaultValueComputed: uuid_generate_v4()
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_player_data_leaks
+                    primaryKeyName: pk_statistics_legions
               - column:
-                  name: player_data_uuid
+                  name: legion
+                  type: varchar
+              - column:
+                  name: games_ended
+                  type: number
+              - column:
+                  name: games_total
+                  type: number
+              - column:
+                  name: patch
+                  type: varchar
+              - column:
+                  name: game_type
+                  type: varchar
+              - column:
+                  name: rank
+                  type: varchar
+              - column:
+                  name: statistics_uuid
                   type: uuid
                   constraints:
-                    foreignKeyName: fk_player_data_leaks
-                    referencedTableName: games_player_data
-                    referencedColumnNames: uuid
+                    references: statistics(uuid)
+                    foreignKeyName: fk_statistics_legions
               - column:
-                  name: leaks
-                  type: varchar[]
+                  name: create_ts
+                  type: timestamp
               - column:
-                  name: wave
-                  type: number
+                  name: modified_ts
+                  type: timestamp
         - createTable:
-            tableName: player_data_fighters
+            tableName: statistics_spells
             columns:
               - column:
                   name: uuid
                   type: uuid
-                  defaultValueComputed: uuid_generate_v4()
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_player_data_build
+                    primaryKeyName: pk_statistics_spells
               - column:
-                  name: player_data_uuid
+                  name: spell
+                  type: varchar
+              - column:
+                  name: games_ended
+                  type: number
+              - column:
+                  name: games_total
+                  type: number
+              - column:
+                  name: patch
+                  type: varchar
+              - column:
+                  name: game_type
+                  type: varchar
+              - column:
+                  name: rank
+                  type: varchar
+              - column:
+                  name: statistics_uuid
                   type: uuid
                   constraints:
-                    foreignKeyName: fk_player_data_build
-                    referencedTableName: games_player_data
-                    referencedColumnNames: uuid
+                    references: statistics(uuid)
+                    foreignKeyName: fk_statistics_spells
               - column:
-                  name: fighters_with_location
-                  type: varchar[]
+                  name: create_ts
+                  type: timestamp
               - column:
-                  name: wave
-                  type: number
+                  name: modified_ts
+                  type: timestamp
         - createTable:
-            tableName: player_data_king_upgrades
+            tableName: statistics_rolls
             columns:
               - column:
                   name: uuid
                   type: uuid
-                  defaultValueComputed: uuid_generate_v4()
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_player_data_king_upgrades
+                    primaryKeyName: pk_statistics_rolls
               - column:
-                  name: player_data_uuid
+                  name: roll
+                  type: varchar
+              - column:
+                  name: games_ended
+                  type: number
+              - column:
+                  name: games_total
+                  type: number
+              - column:
+                  name: patch
+                  type: varchar
+              - column:
+                  name: game_type
+                  type: varchar
+              - column:
+                  name: rank
+                  type: varchar
+              - column:
+                  name: statistics_uuid
                   type: uuid
                   constraints:
-                    foreignKeyName: fk_player_data_king_upgrades
-                    referencedTableName: games_player_data
-                    referencedColumnNames: uuid
+                    references: statistics(uuid)
+                    foreignKeyName: fk_statistics_rolls
               - column:
-                  name: king_upgrades
-                  type: varchar[]
+                  name: create_ts
+                  type: timestamp
               - column:
-                  name: wave
-                  type: number
+                  name: modified_ts
+                  type: timestamp
         - createTable:
-            tableName: player_data_king_upgrades_opponent
+            tableName: statistics_first_wave_fighters
             columns:
               - column:
                   name: uuid
                   type: uuid
-                  defaultValueComputed: uuid_generate_v4()
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_player_data_king_upgrades_opponent
+                    primaryKeyName: pk_statistics_first_wave_fighters
               - column:
-                  name: player_data_uuid
-                  type: uuid
-                  constraints:
-                    foreignKeyName: fk_player_data_king_upgrades_opponent
-                    referencedTableName: games_player_data
-                    referencedColumnNames: uuid
-              - column:
-                  name: king_upgrades
+                  name: fighters
                   type: varchar[]
               - column:
-                  name: wave
+                  name: games_ended
                   type: number
+              - column:
+                  name: games_total
+                  type: number
+              - column:
+                  name: patch
+                  type: varchar
+              - column:
+                  name: game_type
+                  type: varchar
+              - column:
+                  name: rank
+                  type: varchar
+              - column:
+                  name: statistics_uuid
+                  type: uuid
+                  constraints:
+                    references: statistics(uuid)
+                    foreignKeyName: fk_statistics_first_wave_fighters
+              - column:
+                  name: create_ts
+                  type: timestamp
+              - column:
+                  name: modified_ts
+                  type: timestamp
+        - createTable:
+            tableName: statistics_units
+            columns:
+              - column:
+                  name: uuid
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_statistics_units
+              - column:
+                  name: unit
+                  type: varchar
+              - column:
+                  name: games_ended
+                  type: number
+              - column:
+                  name: games_total
+                  type: number
+              - column:
+                  name: patch
+                  type: varchar
+              - column:
+                  name: game_type
+                  type: varchar
+              - column:
+                  name: rank
+                  type: varchar
+              - column:
+                  name: statistics_uuid
+                  type: uuid
+                  constraints:
+                    references: statistics(uuid)
+                    foreignKeyName: fk_statistics_units
+              - column:
+                  name: create_ts
+                  type: timestamp
+              - column:
+                  name: modified_ts
+                  type: timestamp
+  - changeSet:
+      id: 4
+      author: Fabian Iwanecki
+      changes:
+        - createTable:
+            tableName: patches
+            columns:
+              - column:
+                  name: patch
+                  type: varchar
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_patches
+              - column:
+                  name: create_ts
+                  type: timestamp
+              - column:
+                  name: modified_ts
+                  type: timestamp

@@ -2,7 +2,7 @@ package com.legionlord.legionlordbackend.entity;
 
 import io.hypersistence.utils.hibernate.type.array.IntArrayType;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
-import io.hypersistence.utils.hibernate.type.array.StringArrayType;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,23 +58,23 @@ public class GamesPlayerDataEntity {
     private Integer leaksCaughtValue;
     private Integer leftAtSeconds;
 
-    @OneToMany(mappedBy = "playerData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayerDataFightersEntity> buildPerWave;
+    @Type(JsonBinaryType.class)
+    private List<List<String>> buildPerWave;
 
-    @OneToMany(mappedBy = "playerData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayerDataKingUpgradesEntity> kingUpgradesPerWave;
+    @Type(JsonBinaryType.class)
+    private List<List<String>> kingUpgradesPerWave;
 
-    @OneToMany(mappedBy = "playerData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayerDataKingUpgradesOpponentEntity> opponentKingUpgradesPerWave;
+    @Type(JsonBinaryType.class)
+    private List<List<String>> opponentKingUpgradesPerWave;
 
-    @OneToMany(mappedBy = "playerData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayerDataLeaksEntity> leaksPerWave;
+    @Type(JsonBinaryType.class)
+    private List<List<String>> leaksPerWave;
 
-    @OneToMany(mappedBy = "playerData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayerDataMercenariesReceivedEntity> mercenariesReceivedPerWave;
+    @Type(JsonBinaryType.class)
+    private List<List<String>> mercenariesReceivedPerWave;
 
-    @OneToMany(mappedBy = "playerData", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayerDataMercenariesSentEntity> mercenariesSentPerWave;
+    @Type(JsonBinaryType.class)
+    private List<List<String>> mercenariesSentPerWave;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private GameEntity game;
