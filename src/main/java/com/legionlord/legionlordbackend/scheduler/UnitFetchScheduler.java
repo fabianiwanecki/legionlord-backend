@@ -26,7 +26,7 @@ public class UnitFetchScheduler {
     private PatchRepository patchRepository;
 
     @Async
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "2 0 0 * * ?")
     public void fetchUnits() {
         System.out.println("Fetching units");
 
