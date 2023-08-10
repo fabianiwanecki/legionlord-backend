@@ -4,8 +4,8 @@ import com.legionlord.legionlordbackend.dto.*;
 import com.legionlord.legionlordbackend.entity.GameType;
 import com.legionlord.legionlordbackend.entity.Rank;
 import com.legionlord.legionlordbackend.entity.StatisticsEntity;
-import com.legionlord.legionlordbackend.entity.UnitEntity;
 import com.legionlord.legionlordbackend.entity.statistics.*;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -68,15 +68,21 @@ public interface StatisticsMapper {
         return (double) entity.getGamesEnded() / entity.getGamesTotal();
     }
 
-    List<FirstWaveFighterStatisticsDto> firstWaveFightersEntityToDto(List<FirstWaveFighterStatisticsEntity> entities);
+    List<FirstWaveFighterStatisticsDto> firstWaveFightersEntityToDto(List<FirstWaveFighterStatisticsEntity> entities, @Context long totalGames);
 
     @Mapping(source = "fighters", target = "fighters", qualifiedByName = "firstWaveFightersMapper")
     @Mapping(source = "entity", target = "winRate", qualifiedByName = "firstWaveFightersWinRateMapper")
-    FirstWaveFighterStatisticsDto firstWaveFightersEntityToDto(FirstWaveFighterStatisticsEntity entity);
+    @Mapping(source = "entity", target = "pickRate", qualifiedByName = "firstWaveFightersPickRateMapper")
+    FirstWaveFighterStatisticsDto firstWaveFightersEntityToDto(FirstWaveFighterStatisticsEntity entity, @Context long totalGames);
 
     @Named("firstWaveFightersWinRateMapper")
     default Double firstWaveFightersWinRateMapper(FirstWaveFighterStatisticsEntity entity) {
         return (double) entity.getGamesEnded() / entity.getGamesTotal();
+    }
+
+    @Named("firstWaveFightersPickRateMapper")
+    default Double firstWaveFightersPickRateMapper(FirstWaveFighterStatisticsEntity entity, @Context long totalGames) {
+        return (double) entity.getGamesTotal() / totalGames;
     }
 
     @Named("firstWaveFightersMapper")
@@ -85,24 +91,36 @@ public interface StatisticsMapper {
         return fighters.stream().map(fighter -> fighter.replace("\"", "")).toList();
     }
 
-    List<LegionStatisticsDto> legionEntityToDto(List<LegionStatisticsEntity> entities);
+    List<LegionStatisticsDto> legionEntityToDto(List<LegionStatisticsEntity> entities, @Context long totalGames);
 
     @Mapping(source = "entity", target = "winRate", qualifiedByName = "legionWinRateMapper")
-    LegionStatisticsDto legionEntityToDto(LegionStatisticsEntity entity);
+    @Mapping(source = "entity", target = "pickRate", qualifiedByName = "legionPickRateMapper")
+    LegionStatisticsDto legionEntityToDto(LegionStatisticsEntity entity, @Context long totalGames);
 
     @Named("legionWinRateMapper")
     default Double legionWinRateMapper(LegionStatisticsEntity entity) {
         return (double) entity.getGamesEnded() / entity.getGamesTotal();
     }
 
-    List<SpellStatisticsDto> spellEntityToDto(List<SpellStatisticsEntity> entities);
+    @Named("legionPickRateMapper")
+    default Double legionPickRateMapper(LegionStatisticsEntity entity, @Context long totalGames) {
+        return (double) entity.getGamesTotal() / totalGames;
+    }
+
+    List<SpellStatisticsDto> spellEntityToDto(List<SpellStatisticsEntity> entities, @Context long totalGames);
 
     @Mapping(source = "entity", target = "winRate", qualifiedByName = "spellWinRateMapper")
-    SpellStatisticsDto spellEntityToDto(SpellStatisticsEntity entity);
+    @Mapping(source = "entity", target = "pickRate", qualifiedByName = "spellPickRateMapper")
+    SpellStatisticsDto spellEntityToDto(SpellStatisticsEntity entity, @Context long totalGames);
 
     @Named("spellWinRateMapper")
     default Double spellWinRateMapper(SpellStatisticsEntity entity) {
         return (double) entity.getGamesEnded() / entity.getGamesTotal();
+    }
+
+    @Named("spellPickRateMapper")
+    default Double spellPickRateMapper(SpellStatisticsEntity entity, @Context long totalGames) {
+        return (double) entity.getGamesTotal() / totalGames;
     }
 
     List<RollStatisticsDto> rollEntityToDto(List<RollStatisticsEntity> entities);

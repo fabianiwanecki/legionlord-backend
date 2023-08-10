@@ -5,13 +5,11 @@ import com.legionlord.legionlordbackend.entity.GameType;
 import com.legionlord.legionlordbackend.entity.Rank;
 import com.legionlord.legionlordbackend.service.StatisticsService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @AllArgsConstructor
 @RestController
 @RequestMapping("statistics")
@@ -47,6 +45,11 @@ public class StatisticsController {
     @GetMapping("units/latest")
     public List<UnitStatisticsDto> getLatestUnitStatistics(@RequestParam("game-type") GameType gameType, @RequestParam Rank rank) {
         return statisticsService.getLatestUnitStatistics(gameType, rank);
+    }
+
+    @GetMapping("game-count/latest")
+    public Long getTotalGames(@RequestParam("game-type") GameType gameType, @RequestParam Rank rank) {
+        return statisticsService.getTotalGames(gameType, rank);
     }
 
 }
