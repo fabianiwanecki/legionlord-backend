@@ -14,6 +14,8 @@ services:
 
   legionlord-backend:
     image: legionlord-backend
+    build:
+      dockerfile: docker/backend.Dockerfile
     container_name: legionlord-backend
     ports:
       - 9090:9090
@@ -21,6 +23,19 @@ services:
       - legionlord
     depends_on:
       - legionlord-postgres
+
+  nginx:
+    image: legionlord-nginx
+    build:
+      dockerfile: docker/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /private/var/services/legionlord/nginx/letsencrypt:/etc/letsencrypt
+    networks:
+      - legionlord
 
 networks:
   legionlord:
