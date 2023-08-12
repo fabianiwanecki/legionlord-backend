@@ -15,7 +15,8 @@ services:
   legionlord-backend:
     image: legionlord-backend
     build:
-      dockerfile: docker/backend.Dockerfile
+      context: docker
+      dockerfile: backend.Dockerfile
     container_name: legionlord-backend
     ports:
       - 9090:9090
@@ -27,7 +28,8 @@ services:
   nginx:
     image: legionlord-nginx
     build:
-      dockerfile: docker/nginx/Dockerfile
+      context: docker/nginx
+      dockerfile: Dockerfile
     container_name: nginx
     ports:
       - 80:80
