@@ -25,6 +25,18 @@ services:
     depends_on:
       - legionlord-postgres
 
+
+  legionlord-frontend:
+    image: legionlord-frontend
+    build:
+      context: .
+      dockerfile: docker/frontend/frontend.Dockerfile
+    container_name: legionlord-frontend
+    ports:
+      - 5100:80
+    networks:
+      - legionlord
+
   nginx:
     image: legionlord-nginx
     build:
