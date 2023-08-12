@@ -1,5 +1,5 @@
 upstream legionlord {
-    server legioinlord-backend:9090;
+    server legionlord-backend:9090;
 }
 
 server {
