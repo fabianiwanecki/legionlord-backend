@@ -1,5 +1,5 @@
-upstream legionlord-docker {
-    server legionlord_default:9090;
+upstream legionlord {
+    server legioinlord-backend:9090;
 }
 
 server {
@@ -23,6 +23,6 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/api.legionlord.com/privkey.pem;
 
     location / {
-        proxy_pass  http://legionlord-docker;
+        proxy_pass  http://legionlord;
     }
 }
