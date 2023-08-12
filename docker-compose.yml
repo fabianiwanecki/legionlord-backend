@@ -36,6 +36,8 @@ services:
       - /private/var/services/legionlord/nginx/letsencrypt:/etc/letsencrypt
     networks:
       - legionlord
+    depends_on:
+      - legionlord-backend
 
 networks:
   legionlord:
