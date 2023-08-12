@@ -28,8 +28,8 @@ services:
   nginx:
     image: legionlord-nginx
     build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
+      context: docker/nginx
+      dockerfile: Dockerfile
     container_name: nginx
     ports:
       - 80:80
