@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "https://legionlord.com:9090"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:4200", "https://legionlord.com"}, maxAge = 3600)
 @RestController
 @RequestMapping("players")
 public class PlayerController {
