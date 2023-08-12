@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @AllArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "https://legionlord.com"}, maxAge = 3600)
 @RestController
 @RequestMapping("units")
 public class UnitController {

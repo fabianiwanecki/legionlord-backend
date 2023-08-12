@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://legionlord.com"}, maxAge = 3600)
+@CrossOrigin
 @AllArgsConstructor
 @RestController
 @RequestMapping("statistics")

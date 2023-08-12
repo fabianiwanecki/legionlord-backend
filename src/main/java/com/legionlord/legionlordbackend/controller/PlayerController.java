@@ -6,8 +6,8 @@ import com.legionlord.legionlordbackend.service.PlayerService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @AllArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "https://legionlord.com"}, maxAge = 3600)
 @RestController
 @RequestMapping("players")
 public class PlayerController {
