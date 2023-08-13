@@ -10,4 +10,4 @@ spring:
   jpa:
     show-sql: false
 server:
-  port: 9090
+  port: 10010

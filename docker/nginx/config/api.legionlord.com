@@ -1,11 +1,3 @@
-upstream legionlord {
-    server legionlord-backend:9090;
-}
-
-upstream frontend {
-    server legionlord-frontend:5100;
-}
-
 server {
     listen 80;
     listen [::]:80;
@@ -27,6 +19,10 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/api.legionlord.com/privkey.pem;
 
     location / {
-        proxy_pass  http://legionlord;
+        proxy_pass http://backend:10010;
+        proxy_set_header Host $host:$server_port;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
 }

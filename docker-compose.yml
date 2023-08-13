@@ -9,10 +9,8 @@ services:
     environment:
       - POSTGRES_USER:
       - POSTGRES_PASSWORD:
-    networks:
-      - legionlord
 
-  legionlord-backend:
+  backend:
     image: legionlord-backend
     build:
       context: .
@@ -20,22 +18,8 @@ services:
     container_name: legionlord-backend
     ports:
       - 9090:9090
-    networks:
-      - legionlord
     depends_on:
       - legionlord-postgres
-
-
-  legionlord-frontend:
-    image: legionlord-frontend
-    build:
-      context: .
-      dockerfile: docker/frontend/frontend.Dockerfile
-    container_name: legionlord-frontend
-    ports:
-      - 5100:80
-    networks:
-      - legionlord
 
   nginx:
     image: legionlord-nginx
@@ -48,12 +32,5 @@ services:
       - 443:443
     volumes:
       - /private/var/services/legionlord/nginx/letsencrypt:/etc/letsencrypt
-    networks:
-      - legionlord
     depends_on:
       - legionlord-backend
-
-networks:
-  legionlord:
-    external: true
-    name: legionlord_default
