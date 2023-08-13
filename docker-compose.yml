@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER:
       - POSTGRES_PASSWORD:
 
-  backend:
+  legionlord-backend:
     image: legionlord-backend
     build:
       context: .

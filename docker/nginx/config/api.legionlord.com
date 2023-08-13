@@ -19,7 +19,7 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/api.legionlord.com/privkey.pem;
 
     location / {
-        proxy_pass http://backend:10010;
+        proxy_pass http://legionlord-backend:10010;
         proxy_set_header Host $host:$server_port;
         proxy_set_header X-Forwarded-Host $server_name;
         proxy_set_header X-Real-IP $remote_addr;
